@@ -1,0 +1,90 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --foreground-rgb: 0, 0, 0;
+  --background-start-rgb: 214, 219, 220;
+  --background-end-rgb: 255, 255, 255;
+}
+
+/* Theme base colors */
+@layer base {
+  :root {
+    --primary: #1e293b;
+    --primary-foreground: #f8fafc;
+  }
+  html[data-theme='dark'] {
+    --primary: #cbd5e1;
+    --primary-foreground: #0f172a;
+  }
+  html[data-theme='tangerine'] {
+    --primary: #fcd34d;
+    --primary-foreground: #0f172a;
+  }
+  html[data-theme='dark-tangerine'] {
+    --primary: #d97706;
+    --primary-foreground: #0f172a;
+  }
+  html[data-theme='mint'] {
+    --primary: #6ee7b7;
+    --primary-foreground: #0f172a;
+  }
+  html[data-theme='dark-mint'] {
+    --primary: #047857;
+    --primary-foreground: #f8fafc;
+  }
+  html[data-theme='lightish'] {
+    --primary: #047857;
+    --primary-foreground: rgba(247, 250, 252, 0);
+  }
+
+  
+}
+
+
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+}
+
+/* Overlay */
+/* Needed by the loading spinner */
+/* --------------------------------- */
+.form-overlay {
+  position: absolute;
+  top: 0; 
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0,0,0,0.5);
+  
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+form.loading {
+  pointer-events: none; 
+}
+/* --------------------------------- */
+
+.hidden{ display: none!important}
+
+
+
+
+
+
+/*
+.bg-gray-100, .bg-background{
+  --bg-opacity: 1;
+  background-color: #f7fafc;
+  background-color: rgba(247, 250, 252, var(--bg-opacity));
+}
+
+
+#menu-items a{
+  color: #000;
+}*/

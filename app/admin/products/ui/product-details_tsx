@@ -1,0 +1,84 @@
+"use client"
+
+import { useEffect } from "react"
+import { Product } from "@/types/product"
+//import { PRODUCT } from '@/app/admin/utils/constants';
+//import "./product-form.scss";
+//import "@/components/layout/form.scss";
+
+//import Loader from '@/components/blocks/loader';
+//import useProducts from "../../hooks/useProducts";
+//import useDelete from "@/hooks/useDelete";
+//import useProductContext from "../hooks/useProductsContext";
+
+export default function ProductDetails({item}: {item: Product}) {
+  //const { contextState: {dialog: {productId}}, dispatch } = useProductContext();
+  //const { data, loading: queryLoading } = useProducts('id=' +productId);  
+  //const { result, loading: deleteLoading, execute } = useDelete();
+  //let product = {} as Product;
+  
+  //if(data) {
+  //  product = data[0];
+  //}  
+
+  return (
+      <div className="items-center text-left">
+        {item && (
+          <>
+            <div className="prod-name-desc w-full mb-5">          
+              <input type="hidden" value={item.id} />
+              <div className="field-row">
+                <span className="center-image"><img
+                  className="object-cover inline-block"
+                  src={item.imageUrl ? item.imageUrl : "https://placehold.co/400x300"}
+                  alt="Product title"
+                  width="250"
+                  height="200"
+                /></span>
+              </div>
+              <div className="scrollable-content">
+                <div className="field-row">
+                  <label className="label">Product Name:</label>
+                  <span className="info">{item.name}</span>
+                </div>            
+                <div className="field-row">
+                  <label className="label">URL Slug:</label>                
+                  <span className="info">{item.slug}</span>
+                </div>
+                <div className="field-row">
+                  <label className="label">Category:</label>
+                  <span className="info">{item.category}</span>                             
+                </div>    
+                <div className="field-row">
+                  <label className="label">Summary:</label>
+                  <span className="info">{item.summary}</span>
+                </div>              
+                         
+                <div className="field-row">
+                  <label className="label">Price:</label>
+                  <span className="info">${item.price}</span>
+                </div>
+                <div className="field-row">
+                  <label className="label">SKU:</label>
+                  <span className="info">{item.sku}</span>
+                </div>
+                <div className="field-row">
+                  <label className="label">Description:</label>
+                  <span className="info">{item.description}</span>
+                </div>                  
+                <div className="field-row">
+                  <label className="label">Inventory Status:</label>
+                  <span className="info">{item.inStock}</span>
+                </div>     
+                <div className="field-row">
+                  <label className="label">Published:</label>
+                  <span className="info">{item.published?'Yes':'No'}</span>
+                </div>
+              </div> 
+            </div>
+            
+          </>
+        )}        
+      </div>              
+  );
+}

@@ -1,0 +1,141 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model category {
+  name            String?           @unique(map: "Category_name_key")
+  slug            String            @unique(map: "Category_slug_key")
+  description     String
+  parent          Int?              @default(1)
+  count           Int               @default(0)
+  createdAt       DateTime          @default(now())
+  updatedAt       DateTime          @updatedAt
+  id              Int               @id @default(autoincrement())
+  category        category?         @relation("categoryTocategory", fields: [parent], references: [id])
+  other_category  category[]        @relation("categoryTocategory")
+  productcategory productcategory[]
+
+  @@index([parent], map: "category_parent_fkey")
+}
+
+model option {
+  option_id          Int              @id @default(autoincrement())
+  option_name        String
+  option_description String
+  optionitem         optionitem[]
+  productoptions     productoptions[]
+}
+
+model optionitem {
+  item_id        Int              @id @default(autoincrement())
+  item_name      String
+  option_id      Int
+  option         option           @relation(fields: [option_id], references: [option_id], map: "OptionItem_option_id_fkey")
+  productoptions productoptions[]
+
+  @@index([option_id], map: "OptionItem_option_id_fkey")
+}
+
+model product {
+  name            String
+  description     String            @db.VarChar(1000)
+  price           Float
+  createdAt       DateTime          @default(now())
+  updatedAt       DateTime          @updatedAt
+  id              Int               @id @default(autoincrement())
+  imageUrl        String
+  inStock         product_inStock   @default(INSTOCK)
+  published       Boolean           @default(false)
+  sku             String
+  slug            String
+  summary         String            @db.VarChar(500)
+  thumbUrl        String
+  productcategory productcategory[]
+  productimages   productimages[]
+  producttag      producttag[]
+}
+
+model productcategory {
+  category_id         Int
+  product_category_id Int      @id @default(autoincrement())
+  product_id          Int
+  category            category @relation(fields: [category_id], references: [id], map: "ProductCategory_category_id_fkey")
+  product             product  @relation(fields: [product_id], references: [id], map: "ProductCategory_product_id_fkey")
+
+  @@index([category_id], map: "ProductCategory_category_id_fkey")
+  @@index([product_id], map: "ProductCategory_product_id_fkey")
+}
+
+model productimages {
+  product_Images_id Int     @id @default(autoincrement())
+  product_id        Int
+  images_id         Int
+  product           product @relation(fields: [product_id], references: [id], map: "ProductImages_product_id_fkey")
+
+  @@index([product_id], map: "ProductImages_product_id_fkey")
+}
+
+model productoptions {
+  productoption_id Int        @id @default(autoincrement())
+  option_id        Int
+  optionitem_id    Int
+  additional_info  String
+  addon_price      Float
+  active           Boolean
+  optionitem       optionitem @relation(fields: [optionitem_id], references: [item_id], map: "ProductOption_item_id_fkey")
+  option           option     @relation(fields: [option_id], references: [option_id], map: "ProductOption_option_id_fkey")
+
+  @@index([optionitem_id], map: "ProductOption_item_id_fkey")
+  @@index([option_id], map: "ProductOption_option_id_fkey")
+}
+
+model producttag {
+  product_tag_id Int     @id @default(autoincrement())
+  product_id     Int
+  tag_id         Int
+  product        product @relation(fields: [product_id], references: [id], map: "ProductTag_product_id_fkey")
+  tag            tag     @relation(fields: [tag_id], references: [tag_id], map: "ProductTag_tag_id_fkey")
+
+  @@index([product_id], map: "ProductTag_product_id_fkey")
+  @@index([tag_id], map: "ProductTag_tag_id_fkey")
+}
+
+model tag {
+  tag_id      Int          @id @default(autoincrement())
+  name        String
+  description String
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
+  producttag  producttag[]
+}
+
+model user {
+  id        Int      @id @default(autoincrement())
+  email     String   @unique(map: "User_email_key")
+  name      String?
+  type      String
+  password  String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+enum product_inStock {
+  INSTOCK
+  OUTOFSTOCK
+  ONBACKORDER
+}
+
+model activityLog {
+  id Int     @id @default(autoincrement())
+  type        String
+  user_id     Int
+  data         Json  
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  @@index([user_id], map: "ActivityLog_user_id_fkey")
+}
